@@ -45,6 +45,6 @@ Note that to compile pygit2, the python source is needed. Install python source 
 
 >$ sudo apt-get install python-dev
 
-You can also specify the version of python you like by doing, for example:
+You can also specify the version of python you'd like by:
 
 >$ sudo apt-get install python3.3-dev
