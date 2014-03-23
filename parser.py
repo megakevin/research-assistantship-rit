@@ -107,8 +107,8 @@ def is_bug_related(commit):
 
 
 def cross_reference_commits_with_bug_reports():
-    repos_root = "/home/kevin/Desktop/eclipse-platform"#sys.argv[1]#
-    bug_reports_file = "/home/kevin/Downloads/eclipse-bugs.csv"#sys.argv[2]#
+    repos_root = sys.argv[1]#"/home/kevin/Desktop/eclipse-platform"#
+    bug_reports_file = sys.argv[2]#"/home/kevin/Downloads/eclipse-bugs.csv"#
 
     with open(bug_reports_file, newline="") as csv_file:
         bug_reports = [{"id": bug["id"],
