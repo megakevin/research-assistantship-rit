@@ -6,6 +6,8 @@
 # an xml for each project that contains all of that project's commits in a
 # ./output/ folder.
 
+#lol
+
 __author__ = "kevin"
 
 from pygit2 import Repository
