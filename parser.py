@@ -1,5 +1,6 @@
 #Usage: $ python3 parser.py /home/kevin/Desktop/eclipse-platform /home/kevin/Downloads/eclipse-bugs.csv
-# given a folder containing one or more git repos, this script will
+
+# extract_commits(repos_root): given a folder containing one or more git repos, this script will
 # extract every commit of each of the repos and generate an xml file
 # for each commit in a ./output/REPO_NAME/ folder. It will also generate
 # an xml for each project that contains all of that project's commits in a
