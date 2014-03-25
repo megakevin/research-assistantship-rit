@@ -1,5 +1,10 @@
-git-commit-log-extractor
-========================
+research-assistantship-rit
+==========================
+
+This is a series of scripts I'm using during my research assistantship in RIT.
+
+cross_ref_commits_bugs.py
+=========================
 
 Uses libgit2 python wrapper to extract various information regarding git commit logs.
 
