@@ -1,11 +1,5 @@
 #Usage: $ python3 parser.py /home/kevin/Desktop/eclipse-platform /home/kevin/Downloads/eclipse-bugs.csv
 
-# extract_commits(repos_root): given a folder containing one or more git repos, this script will
-# extract every commit of each of the repos and generate an xml file
-# for each commit in a ./output/REPO_NAME/ folder. It will also generate
-# an xml for each project that contains all of that project's commits in a
-# ./output/ folder.
-
 __author__ = "kevin"
 
 from pygit2 import Repository
@@ -44,39 +38,6 @@ def xml_to_string(xml):
 def get_immediate_subdirectories(root_dir):
     return [os.path.join(root_dir, name) for name in os.listdir(root_dir)
             if os.path.isdir(os.path.join(root_dir, name))]
-
-
-def extract_commits(repos_root):
-    # Uncomment code to generate a separate file for each commit.
-    os.makedirs(output_root_path)
-
-    for git_repo in get_immediate_subdirectories(repos_root):
-        repo = Repository(os.path.join(git_repo, git_folder))
-        root = etree.Element("commits")
-
-        repo_name = os.path.basename(os.path.normpath(git_repo))
-        #output_path = os.path.join(output_root_path, repo_name)
-
-        #os.makedirs(output_path)
-
-        for commit in repo.walk(repo.head.target):
-            commit_xml = commit_to_xml(commit)
-
-            root.append(commit_xml)
-
-            # output_single_commit_file_path = os.path.join(output_path, str(commit.id) + ".xml")
-
-            # with open(output_single_commit_file_path, "w") as file:
-            #     file.write(xml_to_string(commit_xml))
-
-            #print("> project: " + repo_name + ", commit: " + str(commit.id) + " extracted")
-
-        output_xml = xml_to_string(root)
-
-        with open(os.path.join(output_root_path, repo_name + "_" + output_commit_file), "w") as file:
-            file.write(output_xml)
-
-        print("> project: " + repo_name + " extraction finished")
 
 
 # Regex patterns to find bug ids according to http://dl.acm.org/citation.cfm?id=1083147
@@ -155,7 +116,6 @@ def cross_reference_commits_with_bug_reports():
 
 
 def main():
-    # extract_commits(sys.argv[1])
     cross_reference_commits_with_bug_reports()
 
 if __name__ == "__main__":
