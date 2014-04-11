@@ -1,4 +1,5 @@
 #Usage: $ python3 parser.py /home/kevin/Desktop/eclipse-platform /home/kevin/Downloads/eclipse-bugs.csv
+# lol
 
 __author__ = "kevin"
 

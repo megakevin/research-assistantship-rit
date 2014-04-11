@@ -1,5 +1,5 @@
 #Usage: $ python3 get_commits.py /home/kevin/Desktop/eclipse-platform
-
+# lol
 # Given a folder containing one or more git repos, this script will
 # extract every commit of each of the repos and generate an xml file
 # for each commit in a ./output/REPO_NAME/ folder. It will also generate
