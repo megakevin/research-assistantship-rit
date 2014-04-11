@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/git-commit-log-extractor.iml" filepath="$PROJECT_DIR$/.idea/git-commit-log-extractor.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/git-commit-log-parser.iml" filepath="$PROJECT_DIR$/.idea/git-commit-log-parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/research-assistantship-rit.iml" filepath="$PROJECT_DIR$/.idea/research-assistantship-rit.iml" />
     </modules>
   </component>
 </project>
