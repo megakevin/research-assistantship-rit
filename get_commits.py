@@ -32,7 +32,11 @@ def commit_to_xml(commit, stats):
     commit_elem.append(etree.Element("committer", name = commit.committer.name, email = commit.committer.email))
 
     message_elem = etree.Element("message")
-    message_elem.text = commit.message
+    try:
+        message_elem.text = commit.message
+    except Exception as ex:
+        translation_map = dict.fromkeys(range(32))
+        message_elem.text = commit.message.translate(translation_map)
 
     stats_elem = etree.Element("stats")
     stats_elem.text = stats
@@ -72,6 +76,7 @@ def get_commit_stats(commit_id):
 
 def extract_commits(repos_root, output_path):
     # Uncomment code to generate a separate file for each commit.
+
     try:
         os.makedirs(output_path)
     except FileExistsError as ex:
@@ -93,8 +98,8 @@ def extract_commits(repos_root, output_path):
             commit_xml = commit_to_xml(commit, stats)
             root.append(commit_xml)
 
-            print(".", end=" ")
-            # print("> project: " + repo_name + ", commit " + str(commit.id) + " processed")
+            # print(".", end=" ")
+            print("> project: " + repo_name + ", commit " + str(commit.id) + " processed")
 
         output_xml = xml_to_string(root)
 
