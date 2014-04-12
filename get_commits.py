@@ -1,5 +1,6 @@
-#Usage: $ python3 get_commits.py /home/kevin/Desktop/eclipse-platform
-# lol
+#Usage: $ python3 get_commits.py /home/kevin/Desktop/eclipse-platform ./output/
+# python3 get_commits.py <git_repos_path> <output_path>
+#
 # Given a folder containing one or more git repos, this script will
 # extract every commit of each of the repos and generate an xml file
 # for each commit in a ./output/REPO_NAME/ folder. It will also generate
@@ -13,15 +14,16 @@ from lxml import etree
 import sys
 import os
 from datetime import datetime
+from subprocess import check_output
 
-output_root_path = "./output/"
+default_output_root_path = "./output/"
 output_commit_file = "commits.xml"
 git_folder = ".git/"
 
 bug_date_format = "%Y-%m-%d %H:%M:%S"
 bug_related_words = ["bug", "fix", "defect", "broken", "crash", "freeze", "break", "wrong", "glitch", "proper"]
 
-def commit_to_xml(commit):
+def commit_to_xml(commit, stats):
     commit_elem = etree.Element("commit",
                                 id = str(commit.id),
                                 time = str(commit.commit_time),
@@ -32,7 +34,11 @@ def commit_to_xml(commit):
     message_elem = etree.Element("message")
     message_elem.text = commit.message
 
+    stats_elem = etree.Element("stats")
+    stats_elem.text = stats
+
     commit_elem.append(message_elem)
+    commit_elem.append(stats_elem)
 
     return commit_elem
 
@@ -46,47 +52,69 @@ def get_immediate_subdirectories(root_dir):
             if os.path.isdir(os.path.join(root_dir, name))]
 
 
-def extract_commits(repos_root):
+def get_commit_stats(commit_id):
+    # This git command returns:
+    # "\n
+    # <added_lines>\t<deleted_lines>\t<file_name>\n
+    # <added_lines>\t<deleted_lines>\t<file_name>"
+    cmd_show_numstat = "git show --numstat --format='format:' {0}".format(str(commit_id))
+    commit_stats = check_output(cmd_show_numstat, shell=True).decode("utf-8")
+
+    parsed_stats = "\n"
+
+    for file_stats in commit_stats.split("\n"):
+        if len(file_stats.split("\t")) == 3:  # Process only if it's a line with actual data
+            added_lines, deleted_lines, file_name = file_stats.split("\t")
+            parsed_stats += "{0}\t{1}\t{2}\n".format(file_name, added_lines, deleted_lines)
+
+    return parsed_stats
+
+
+def extract_commits(repos_root, output_path):
     # Uncomment code to generate a separate file for each commit.
     try:
-        os.makedirs(output_root_path)
+        os.makedirs(output_path)
     except FileExistsError as ex:
         pass
 
+    exec_dir = os.getcwd()
+
     for git_repo in get_immediate_subdirectories(repos_root):
+        os.chdir(git_repo)
         repo = Repository(os.path.join(git_repo, git_folder))
         root = etree.Element("commits")
 
         repo_name = os.path.basename(os.path.normpath(git_repo))
-        #output_path = os.path.join(output_root_path, repo_name)
 
-        #os.makedirs(output_path)
+        print("\n> project: " + repo_name + " extraction started")
 
         for commit in repo.walk(repo.head.target):
-            commit_xml = commit_to_xml(commit)
-
+            stats = get_commit_stats(commit.id)
+            commit_xml = commit_to_xml(commit, stats)
             root.append(commit_xml)
 
-            for e in commit.tree:
-                print(e.name)
-
-            # output_single_commit_file_path = os.path.join(output_path, str(commit.id) + ".xml")
-
-            # with open(output_single_commit_file_path, "w") as file:
-            #     file.write(xml_to_string(commit_xml))
-
-            #print("> project: " + repo_name + ", commit: " + str(commit.id) + " extracted")
+            print(".", end=" ")
+            # print("> project: " + repo_name + ", commit " + str(commit.id) + " processed")
 
         output_xml = xml_to_string(root)
 
-        with open(os.path.join(output_root_path, repo_name + "_" + output_commit_file), "w") as file:
+        os.chdir(exec_dir)
+
+        with open(os.path.join(output_path, repo_name + "_" + output_commit_file), "w") as file:
             file.write(output_xml)
 
-        print("> project: " + repo_name + " extraction finished")
+        print("\n> project: " + repo_name + " extraction finished")
 
 
 def main():
-    extract_commits(sys.argv[1])
+
+    repo_path = sys.argv[1]
+    output_root_path = default_output_root_path
+
+    if len(sys.argv) > 2:
+        output_root_path = sys.argv[2]
+
+    extract_commits(repo_path, output_root_path)
 
 if __name__ == "__main__":
     main()
