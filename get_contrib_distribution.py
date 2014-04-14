@@ -1,5 +1,5 @@
-# Usage: $ python3 merge_contrib_distribution.py /home/kevin/Desktop/sac-data/stats
-#          python3 merge_contrib_distribution.py <merged_files>
+# Usage: $ python3 get_contrib_distribution.py /home/kevin/Desktop/sac-data/stats output.csv
+#          python3 get_contrib_distribution.py <merged_files> <output_path>
 #
 # Merges all the extracted contribution per tag data into one single file.
 
@@ -8,10 +8,6 @@ __author__ = 'kevin'
 import sys
 import csv
 import os
-
-contrib_file_prefix = "contrib_"
-contrib_file_extension = ".csv"
-single_authored_threshold = 90.0
 
 # RQ 1: Generate a csv file for each project with: file, release, if its SAC, LOC
 csv_header = ['project', '0%', '5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '45%', '50%',
@@ -24,11 +20,10 @@ def main(argv):
 
     result = []
 
-    contribution = 'top_single_dev_contribution_knowledge_percent'
-
     for data_file in os.listdir(data_dir):
         with open(os.path.join(data_dir, data_file), newline="") as csv_file:
-            data = [float(row[contribution]) for row in csv.DictReader(csv_file)]
+            data = [float(row['top_single_dev_contribution_knowledge_percent'])
+                    for row in csv.DictReader(csv_file)]
 
         result.append({
             'project': data_file,
