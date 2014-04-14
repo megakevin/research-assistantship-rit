@@ -20,8 +20,6 @@ default_output_root_path = "./output/"
 output_commit_file = "commits.xml"
 git_folder = ".git/"
 
-bug_date_format = "%Y-%m-%d %H:%M:%S"
-bug_related_words = ["bug", "fix", "defect", "broken", "crash", "freeze", "break", "wrong", "glitch", "proper"]
 
 def commit_to_xml(commit, stats):
     commit_elem = etree.Element("commit",
