@@ -1,11 +1,11 @@
 #!/bin/bash
 
-und create -db project_metrics -languages java c++ java c# web python add /home/kevin/Desktop/repos/facebook-android-sdk
+und create -db project_metrics -languages c++ java c# web python add /home/kevin/Desktop/repos/facebook-android-sdk
 
 # Create the metrics-db for the tag
 echo "> Creating the understand-db..."
-und -db project_metrics settings -Metrics CountLine CountLineCode CountLineComment SumCyclomatic Cyclomatic  CountDeclFunction CountDeclFile
-und -db project_metrics settings -ReportReports  "File Average Metrics" "Project Metrics" "File Metrics"
+und -db project_metrics settings -Metrics CountLine CountLineCode CountLineComment SumCyclomatic Cyclomatic CountDeclFunction CountDeclFile
+und -db project_metrics settings -ReportReports "File Average Metrics" "Project Metrics" "File Metrics"
 und -db project_metrics settings -MetricFileNameDisplayMode RelativePath
 
 # Analyze the code
