@@ -51,9 +51,9 @@ def main(argv):
 
         result.append({
             'project': data_file,
-            'mean SAC': mean_sac,
-            'mean non SAC': mean_non_sac,
-            'mean change': mean_change,
+            'mean SAC': round(mean_sac, 2),
+            'mean non SAC': round(mean_non_sac, 2),
+            'mean change': round(mean_change, 2),
             'pVal': "TO CALCULATE"
         })
 

@@ -37,6 +37,7 @@ def main(argv):
     output_file = argv[2]
 
     result = []
+    detailed_result = []
 
     for data_file in os.listdir(data_dir):
         with open(os.path.join(data_dir, data_file), newline="") as csv_file:
@@ -51,6 +52,15 @@ def main(argv):
             files_line_count_sac = [l['count_line'] for l in data if l['contrib_percent'] >= 90]
             files_line_count_non_sac = [l['count_line'] for l in data if l['contrib_percent'] < 90]
 
+            # detailed_sac = [data_file + "-sac"]
+            # detailed_sac.extend([str(f) for f in files_line_count_sac])
+            #
+            # detailed_non_sac = [data_file + "-non-sac"]
+            # detailed_non_sac.extend([str(f) for f in files_line_count_non_sac])
+
+            # detailed_result.append([data_file + "-sac"] + [str(f) for f in files_line_count_sac])
+            # detailed_result.append([data_file + "-non-sac"] + [str(f) for f in files_line_count_non_sac])
+
             mean_SAC = mean(files_line_count_sac)
             mean_non_SAC = mean(files_line_count_non_sac)
 
@@ -63,12 +73,12 @@ def main(argv):
 
         result.append({
             'project': data_file,
-            'mean SAC': mean_SAC,
-            'mean non SAC': mean_non_SAC,
-            'mean change': mean_change,
-            'median SAC': median_SAC,
-            'median non SAC': median_non_SAC,
-            'median change': median_change,
+            'mean SAC': round(mean_SAC, 1),
+            'mean non SAC': round(mean_non_SAC, 1),
+            'mean change': round(mean_change, 1),
+            'median SAC': round(median_SAC, 1),
+            'median non SAC': round(median_non_SAC, 1),
+            'median change': round(median_change, 1),
             'pVal': "TO CALCULATE"
         })
 
@@ -76,6 +86,10 @@ def main(argv):
         writer = csv.DictWriter(output, csv_header)
         writer.writeheader()
         writer.writerows(result)
+
+    # with open(output_file + "-detail.csv", 'w') as csvfile:
+    #     writer = csv.writer(csvfile)
+    #     writer.writerows(detailed_result)
 
 
 if __name__ == "__main__":

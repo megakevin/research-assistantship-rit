@@ -32,12 +32,12 @@ def main(argv):
 
         result.append({
             'project': data_file,
-            '70% lines': (sum([f['lines'] for f in data if f['contrib_percent'] >= 70 ]) / total_lines) * 100,
-            '70% files': (len([f for f in data if f['contrib_percent'] >= 70 ]) / total_files) * 100,
-            '80% lines': (sum([f['lines'] for f in data if f['contrib_percent'] >= 80 ]) / total_lines) * 100,
-            '80% files': (len([f for f in data if f['contrib_percent'] >= 80 ]) / total_files) * 100,
-            '90% lines': (sum([f['lines'] for f in data if f['contrib_percent'] >= 90 ]) / total_lines) * 100,
-            '90% files': (len([f for f in data if f['contrib_percent'] >= 90 ]) / total_files) * 100,
+            '70% lines': round((sum([f['lines'] for f in data if f['contrib_percent'] >= 70 ]) / total_lines) * 100, 1),
+            '70% files': round((len([f for f in data if f['contrib_percent'] >= 70 ]) / total_files) * 100, 1),
+            '80% lines': round((sum([f['lines'] for f in data if f['contrib_percent'] >= 80 ]) / total_lines) * 100, 1),
+            '80% files': round((len([f for f in data if f['contrib_percent'] >= 80 ]) / total_files) * 100, 1),
+            '90% lines': round((sum([f['lines'] for f in data if f['contrib_percent'] >= 90 ]) / total_lines) * 100, 1),
+            '90% files': round((len([f for f in data if f['contrib_percent'] >= 90 ]) / total_files) * 100, 1)
         })
 
     with open(output_file, 'w', newline='') as output:
